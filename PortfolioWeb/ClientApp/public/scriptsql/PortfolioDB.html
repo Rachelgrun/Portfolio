@@ -1,16 +1,23 @@
-﻿--AS Great job! 100% Please see one comment, no need to resubmit.
-use PortfolioDB
+﻿use PortfolioDB
 
+go
+drop table if exists DevSubsectionElement
 drop table if exists DevSubSectionTool
 drop table if exists DevSubSection
 drop table if exists DevSectionTool
 drop table if exists DevSection
 drop table if exists DevTool
+drop table if exists DevToolType
 drop table if exists Profile
+go
+
+
+
+
 
 
 create table dbo.Profile(
---AS It's always a good habit to prefix your constraint name with the name of the table, so it is easy to trace back to the problem.
+
     ProfileId int not null identity primary key,
     FirstName varchar(35) not null
         constraint ck_First_Name_cannot_be_blank check(FirstName <> ''),
@@ -27,11 +34,25 @@ create table dbo.Profile(
 )
 go
 
+create table dbo.DevToolType(
+DevToolTypeId int not null  identity primary key,
+DevToolTypeCode varchar(25) not null constraint u_DevToolType_code unique,
+DevToolTypeName varchar(100) not null
+ constraint ck_DevToolTypeName_cannot_be_blank check(DevToolTypeName <> '')
+ constraint u_DevToolType_Name unique,
+ DevToolTypeSequence int not null,
+ ShowHomePage bit not null
+)
+go
+
 create table dbo.DevTool(
     DevToolId int not null identity primary key,
+    DevToolTypeId int not null constraint f_DevToolType_DevTool foreign key references DevToolType(DevToolTypeId),
+    DevToolCode as replace(replace(replace(lower(DevToolName),' ',''),'.',''),'#','') constraint u_DevTool_DevToolCode unique,
     DevToolName varchar(50) not null constraint u_DevTool_DevToolName unique,
         constraint ck_Dev_Tool_Name_cannot_be_blank check(DevToolName <> ''),
-    DevToolSequenceNum int not null constraint u_DevTool_SequenceNum unique
+    DevToolSequenceNum int not null constraint u_DevTool_SequenceNum unique,
+    HasIcon bit not null default 0
 )
 go
 
@@ -63,19 +84,31 @@ create table dbo.DevSubsection(
     DevSectionId int not null constraint fk_DevSection_DevSubsection foreign key references DevSection(DevSectionId),
     DevSubsectionCode varchar(25) not null constraint u_DevSubsection_DevSubsectionCode unique,
         constraint ck_Dev_Subsection_Code_cannot_be_blank check(DevSubsectionCode <> ''),
-    DevSubsectionName varchar(35) not null
+    DevSubsectionName varchar(45) not null
         constraint ck_Dev_Subsection_Name_cannot_be_blank check(DevSubsectionName <> ''),
-    DevSubsectionDesc varchar(500) not null
+    DevSubsectionDesc varchar(1000) not null
         constraint ck_Dev_Subsection_Desc_cannot_be_blank check(DevSubsectionDesc <> ''),
     GitHubRepoName varchar(25) not null
-        constraint ck_GitHub_RepoName_cannot_be_blank check(GitHubRepoName <> ''),
-    HasIcon bit not null default 0,
-    HasPicture bit not null default 0,
-    HasVideo bit not null default 0,
-    HasSpec bit not null default 0,
-    HasWireframe bit not null default 0,
-    DevSubSectionSequence int not null constraint u_DevSubsection_DevSubsectionSequence unique,
+       constraint ck_GitHub_RepoName_cannot_be_blank check(GitHubRepoName <> ''),
+
+    DevSubSectionSequence int not null --constraint u_DevSubsection_DevSubsectionSequence unique,
     constraint u_DevSubsection_DevSectionID_DevSubsectionName unique(DevSubsectionName, DevSectionId)
+)
+go
+
+
+create table dbo.DevSubsectionElement(
+    DevSubsectionElementId int not null identity primary key,
+    DevSubsectionId int not null constraint f_DevSubsection_DevSubsectionElement foreign key references DevSubsection(DevSubsectionId),
+    DevSubsectionElementCode varchar(25) not null
+    constraint ck_DevSubsectionElement_DevSubsectionElementCode_cannot_be_blank check(DevSubsectionElementCode <> ''),
+    ButtonText varchar(25) not null
+    constraint ck_DevSubsectionElement_ButtonText_cannot_be_blank check(ButtonText <> ''),
+    HtmlTag varchar(10) not null,
+    FileExtension varchar(5) not null,
+     DevSubsectionElementPriority int not null
+
+
 )
 go
 

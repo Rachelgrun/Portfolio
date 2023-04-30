@@ -6,19 +6,41 @@ a {
 .code {
     border: 1px solid lightgray;
     padding: 20px;
-    font-family: Consolas
+    font-family: Consolas;
+}
+.trysqlcode{
+    font-family:Consolas;
+    font-size:x-large;
+    color:darkblue;
+}
+
+.devsubsectionactive {
+    text-decoration:underline;
+    font-weight:bold;
+}
+
+.devtoolheader {
+    min-width: 135px;
+    max-width: 135px;
+    font-family: Consolas;
 }
 
 
-.devtoolheader{
-    min-width:135px;
-    max-width:135px;
-    font-family:Consolas;
 
-  
-   
+.cardsize {
+    height: 375px;
+    width: auto;
+    overflow: hidden;
+}
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* scales the image to cover the entire container */
+}
 
     
+.csharp{
+    color:blue;
 }
 
 .sql {
@@ -44,3 +66,4 @@ a {
 .sqlgreen {
     color: green;
 }
+

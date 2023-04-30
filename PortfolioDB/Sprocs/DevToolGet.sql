@@ -31,7 +31,8 @@ create or alter procedure dbo.DevToolGet(
              dt.DevToolTypeCode,
              t.DevToolCode,
              t.DevToolName,
-             t.HasIcon
+             t.HasIcon,
+             t.IconExt
         from DevTool t 
         join DevToolType dt 
         on t.DevToolTypeId= dt.DevToolTypeId
@@ -39,12 +40,12 @@ create or alter procedure dbo.DevToolGet(
         on st.DevToolId = t.DevToolId
         and st.DevSubsectionId = @DevSubsectionId
     where 
-    (t.DevToolId = ISNULL(@DevToolId, 0) or ISNULL(@All,0) = 1)
+   (ISNULL(@All,0) = 1 or t.DevToolId = ISNULL(@DevToolId, 0) )
     and (@DevSubsectionId = 0 or st.DevSubsectionId is not null)
-
-        order by dt.DevToolTypeSequence,t.DevToolSequenceNum
+     order by dt.DevToolTypeSequence,t.DevToolSequenceNum
 
         end
         go 
-        exec DevToolGet @All = 1
+        --exec DevToolGet @All = 1
+        --exec DevToolGet @All = 0, @DevSubsectionCode = 'tic-tac-toe-Win'
        

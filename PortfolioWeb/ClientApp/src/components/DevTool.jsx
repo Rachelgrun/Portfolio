@@ -6,10 +6,10 @@ export function DevTool(props){
     const [devtools, setDevTools] = useState([]);
     const tooltype = props.toolType;
     let caption = props.caption;
-    const subsectioncode = props.subsectionCode;
+    const subsectioncode = props.subsectioncode;
     useEffect(() => {
         (async () => {
-
+            console.log("subsectioncode", subsectioncode);
             const devtoolsobj = await GetDevTools(subsectioncode);
             setDevTools(devtoolsobj);
         }
@@ -27,7 +27,7 @@ export function DevTool(props){
     return (
         <ul className="list-group list-group-horizontal">
             <li className="list-group-item devtoolheader">{caption}</li>
-            {tools.map(t => <li className="list-group-item text-bg-light bg-light border border-light">{GetTool(t)}</li>)}
+            {tools.map(t => <li key={t.devToolCode} className="list-group-item text-bg-light bg-light border border-light">{GetTool(t)}</li>)}
                 </ul>
         )
 }
@@ -36,7 +36,7 @@ function GetTool(t) {
     
 
     if (t.hasIcon) {
-        const imgpath = "/tool/" + t.devToolCode + ".svg";
+        const imgpath = "/tool/" + t.devToolCode + "." + t.iconExt;
         return (
 
             <figure className="figure my-0">

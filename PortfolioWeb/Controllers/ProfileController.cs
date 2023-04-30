@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CPUFramework;
+using Microsoft.AspNetCore.Mvc;
 using PortfolioBizObjects;
-
+using System.Data;
+using Newtonsoft.Json;
 
 namespace PortfolioWeb.Controllers
 {
@@ -56,6 +58,32 @@ namespace PortfolioWeb.Controllers
      public List<bizDevToolType> DevToolTypeGet()
         {
             return bizDevToolType.GetAll();
+        }
+        [HttpGet("trysql")]
+        public IActionResult TrySQL(string dbname, string sql)
+        {
+            string connstring = DataUtility.ConnectionString;
+            connstring = connstring.Replace("PortfolioDB", dbname);
+
+            try
+            {
+
+                DataTable dt = SQLUtility.GetDataTable(connstring, sql);
+
+                if (dt.Rows.Count == 0)
+                {
+                    foreach (DataColumn c in dt.Columns)
+                    {
+                        c.AllowDBNull = true;
+                    }
+                    dt.Rows.Add();
+                }
+                return Ok(JsonConvert.SerializeObject(dt));
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { errormsg = ex.Message });
+            }
         }
     }
 }

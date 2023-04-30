@@ -22,5 +22,6 @@ namespace PortfolioBizObjects
         public bool HasSpec { get; set; }
         public bool HasWireframe { get; set; }
         public int DevSubSectionSequence { get; set; }
+
     }
 }

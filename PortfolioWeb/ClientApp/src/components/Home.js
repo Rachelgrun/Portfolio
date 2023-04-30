@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { GetProfile, GetDevSections, GetDevToolTypes } from './Utility';
 import { DevTool } from './DevTool';
+import { NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
+
 
 function Home() {
     const [profile, setProfile] = useState({});
@@ -44,13 +48,24 @@ function Home() {
                 </div>)
 
             }
-
+           
             <div className="row">
                 {devsections.map(d =>
                     <div key={d.devSectionCode} className="col-md-3">
-                        <div className="card">
+                        <div className="card devsectioncard cardsize">
+                            
                             <div className="card-header">{d.devSectionName}</div>
-                            <div className="card-body">{d.devSectionBlurb}</div>
+                            <div className="card-image">
+                                <img src={d.devSectionCode + ".png"} width="300px" />
+                               
+                            </div>
+                            {/*<div className="card-body-bg">*/}
+                            {/*     <img src={d.devSectionCode + ".png"} width="300px" />*/}
+                            {/*</div>*/}
+                            <div className="card-body-text">{d.devSectionBlurb}</div>
+                            <div className="card-footer">
+                                <NavLink className="btn btn-info" tag={Link} to={"/DevSection/" + d.devSectionCode}>See {d.devSectionName}</NavLink>
+                            </div>
                         </div>
                     </div>)}
             </div>

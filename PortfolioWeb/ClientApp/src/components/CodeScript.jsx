@@ -1,16 +1,17 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { GetSQLScript } from './Utility';
+import { GetCodeScript } from './Utility';
 
 
 
-export function SQLScript(props) {
+export function CodeScript(props) {
     const [filecontents, setFilecontents] = useState("");
     const fileurl = props.dirpath;
+    const elementcode = props.elementcode;
     useEffect(() => {
         (async () => {
 
 
-            const filecontentsval = await GetSQLScript(fileurl);
+            const filecontentsval = await GetCodeScript(fileurl, elementcode);
             setFilecontents(filecontentsval);
 
         }
@@ -18,7 +19,7 @@ export function SQLScript(props) {
     }, [fileurl]);
 
     if (filecontents == "") return <p>Loading...</p>;
-    console.log(filecontents);
+
     return (
         <div className="code" dangerouslySetInnerHTML={{ __html: filecontents }} />
         

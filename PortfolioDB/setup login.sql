@@ -5,7 +5,7 @@ create login portfolio_login with password = 'RUCHIEg19'
 --alter login portfolio_login with password = 'localRUCHIEG'
 
 go 
---use PortfolioDB 
+--use PortfolioDB
 --use RecordKeeperDB
 --use RecipeDB
 --drop user portfolio_user

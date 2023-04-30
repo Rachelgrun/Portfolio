@@ -37,7 +37,7 @@ go
 
 create table dbo.DevToolType(
 DevToolTypeId int not null  identity primary key,
-DevToolTypeName varchar(25) not null constraint u_DevToolType_code unique,
+DevToolTypeCode varchar(25) not null constraint u_DevToolType_code unique,
 DevToolTypeName varchar(100) not null
  constraint ck_DevToolTypeName_cannot_be_blank check(DevToolTypeName <> '')
  constraint u_DevToolType_Name unique,
@@ -53,7 +53,8 @@ create table dbo.DevTool(
     DevToolName varchar(50) not null constraint u_DevTool_DevToolName unique,
         constraint ck_Dev_Tool_Name_cannot_be_blank check(DevToolName <> ''),
     DevToolSequenceNum int not null constraint u_DevTool_SequenceNum unique,
-    HasIcon bit not null default 0
+    HasIcon bit not null default 0,
+    IconExt varchar(3) not null default 'svg'
 )
 go
 
@@ -89,9 +90,9 @@ create table dbo.DevSubsection(
         constraint ck_Dev_Subsection_Name_cannot_be_blank check(DevSubsectionName <> ''),
     DevSubsectionDesc varchar(1000) not null
         constraint ck_Dev_Subsection_Desc_cannot_be_blank check(DevSubsectionDesc <> ''),
-    GitHubRepoName varchar(25) not null
+    GitHubRepoName varchar(25)
        constraint ck_GitHub_RepoName_cannot_be_blank check(GitHubRepoName <> ''),
-  
+    URL varchar(250) not null default '',
     DevSubSectionSequence int not null --constraint u_DevSubsection_DevSubsectionSequence unique,
     constraint u_DevSubsection_DevSectionID_DevSubsectionName unique(DevSubsectionName, DevSectionId)
 )
@@ -103,7 +104,7 @@ create table dbo.DevSubsectionElement(
     DevSubsectionId int not null constraint f_DevSubsection_DevSubsectionElement foreign key references DevSubsection(DevSubsectionId),
     DevSubsectionElementCode varchar(25) not null 
     constraint ck_DevSubsectionElement_DevSubsectionElementCode_cannot_be_blank check(DevSubsectionElementCode <> ''),
-    ButtonText varchar(25) not null
+    ButtonText varchar(25),
     constraint ck_DevSubsectionElement_ButtonText_cannot_be_blank check(ButtonText <> ''),
     HtmlTag varchar(10) not null,
     FileExtension varchar(5) not null,

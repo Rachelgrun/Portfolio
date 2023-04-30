@@ -33,6 +33,11 @@ export async function GetDevToolTypes() {
     return d;
 }
 
+export async function GetDataTable(dbname, sql) {
+ 
+    const t = await FetchFromAPI("trysql?dbname=" + dbname + "&sql=" + sql)
+    return t;
+}
 
 
 async function FetchFromAPI(apiurl) {
@@ -43,12 +48,21 @@ async function FetchFromAPI(apiurl) {
     console.log(json_array);
 }
 
-export async function GetSQLScript(fileurl) {
+export async function GetCodeScript(fileurl,codetype) {
 
-    let sqlscript = await FetchFromFile(fileurl);
-    sqlscript = FormatSQLasHtml(sqlscript);
-    return sqlscript;
+    let codescript = await FetchFromFile(fileurl);
+    switch (codetype) {
+        case "scriptsql":
+            codescript = FormatSQLasHtml(codescript);
+            break;
+        case "scriptcsharp":
+            codescript = FormatCSharpasHTML(codescript);
+    }
+
+    return codescript;
 }
+
+
 
 export async function FetchFromFile(fileurl) {
     const resp = await fetch(fileurl);
@@ -56,9 +70,26 @@ export async function FetchFromFile(fileurl) {
     return contents;
 }
 
+function DoFormatArray(wholevalue, classvalue, arrayvalue) {
+    arrayvalue.forEach(x => wholevalue = DoFormat(wholevalue, x, classvalue))
+    return wholevalue;
+}
+
+function DoFormat(wholevalue, findvalue, classvalue) {
+    
+    return wholevalue.replaceAll(findvalue, "<span class=\"" + classvalue + "\">" + findvalue + "</span>")
+}
+function FormatCSharpasHTML(code) {
+    code = code.replace(/(?:\r\n|\r|\n)/g, '<br>');
+   return DoFormatArray(code, "csharp", ["public class", "protected ", "private "]);
+
+}
+
+
 function FormatSQLasHtml(sql) {
     let s = sql.toString();
     s = s.replace(/(?:\r\n|\r|\n)/g, '<br>');
+  
     s = s.replace("sys.databases", "<span class=\"sqlgreen\">sys.databases</span>");
     s = s.replace(/if /g, "<span class=\"sql\">if </span>");
     s = s.replace(/select/g, "<span class=\"sql\">select</span>");
@@ -70,9 +101,8 @@ function FormatSQLasHtml(sql) {
     s = s.replace(/ int/g, "<span class=\"sql\"> int</span>");
     s = s.replace(/varchar/g, "<span class=\"sql\">varchar</span>");
     s = s.replace(/create database/g, "<span class=\"sql\">create database</span>");
-    s = s.replace(/create table/g, "<span class=\"sql\">create table</span>");
-    s = s.replace(/primary key/g, "<span class=\"sql\">primary key</span>");
-    s = s.replace(/identity/g, "<span class=\"sql\">identity</span>");
+    s = DoFormatArray(s, "sql", ["create table","primary key","identity"])
+    
     s = s.replace(/foreign key references/g, "<span class=\"sql\">foreign key references</span>");
     s = s.replace(/datetime/g, "<span class=\"sql\">datetime</span>");
     s = s.replace(/date /g, "<span class=\"sql\">date </span>");

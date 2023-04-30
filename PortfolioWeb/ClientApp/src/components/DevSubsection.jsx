@@ -2,8 +2,10 @@
 import { Navbar, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { GetDevSubsectionElements } from './Utility';
-import { SQLScript } from './SQLScript';
+import { CodeScript } from './CodeScript';
 import { DevTool } from './DevTool';
+import { TRYSQL } from './TRYSQL';
+//import subsectionvideo from './videos/calculator-Win.mp4';
 
 export function DevSubsection(props) {
     const subsection = props.subsection;
@@ -53,7 +55,7 @@ export function DevSubsection(props) {
                 <Navbar className="navbar-expand-sm">
                   <ul className="navbar-nav">
                     {subelements.map(e =>
-                        <NavItem key={e.devSubsectionElementCode} tag={Link} to={{}} className="btn btn-primary mx-2" onClick={() => setActiveTab(e.devSubsectionElementSequence)}>{e.buttonText}</NavItem>
+                        <NavItem key={e.devSubsectionElementCode} tag={Link} to={{}} className={"btn mx-2 " + (activetab == e.devSubsectionElementSequence ? "btn-primary" : "btn-info")} onClick={() => setActiveTab(e.devSubsectionElementSequence)}>{e.buttonText}</NavItem>
                         )}
                         </ul>
                 </Navbar>
@@ -75,12 +77,34 @@ export function DevSubsection(props) {
 
 function GetSubElement(e) {
     const fileurl = "/" + e.devSubsectionElementCode + "/" + e.devSubsectionCode + e.fileExtension;
+
+
+
     switch (e.htmlTag) {
         case "img":
-            return <img src={fileurl} width="500" />;
+            return <img src={fileurl} width="1000" />;
             break;
         case "iframe":
-            return <SQLScript dirpath={fileurl} />;
+            return <CodeScript dirpath={fileurl} elementcode={e.devSubsectionElementCode} />;
+            break;
+        case "video":
+            const subsectionvideo =  require("./videos/" + e.devSubsectionCode + ".mp4");
+            return (
+                <video key={e.devSubsectionCode} width="700" height="600" loop autoPlay muted>
+                    <source src={subsectionvideo.default} type ="video/mp4" />
+                    </video>
+                )
+            break;
+
+        case "a":
+            return (
+                <a href={e.url} target="_new">Click here to see website</a>
+                )
+            break;
+        case "trysql":
+            return (
+                < TRYSQL key={e.devSubsectionCode} dbname={e.devSubsectionCode} />
+                ) 
             break;
     }
 }

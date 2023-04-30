@@ -38,7 +38,7 @@ export class NavMenu extends Component {
                 <Container>
                     <NavbarBrand tag={Link} to="/">
                        
-                        <img src="/pic.JPG" width="150px" className="rounded-pill" />
+                        <img src="/pic.JPG" width="100px" className="rounded-pill" />
                         {profile.firstName + " " + profile.lastName + " " + "'s Software Portfolio"}</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="justify-content-between" isOpen={!this.state.collapsed} navbar>
@@ -56,7 +56,7 @@ export class NavMenu extends Component {
                             </li>
 
                             <li className="nav-item">
-                                <a className="nav-link" target="_blank" href="// put resume here. paste resume in public folder"  >Get My Resume</a>
+                                <a className="nav-link" target="_blank" href="/Ruchie Brisman's Resume.pdf"  >Get My Resume</a>
 
                             </li>
 

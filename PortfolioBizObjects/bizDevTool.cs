@@ -13,7 +13,9 @@ namespace PortfolioBizObjects
         public string DevToolTypeName { get; set; } = "";
         public string DevToolCode { get; set; } = "";
         public string DevToolName { get; set; } = "";
-        public bool HasIcon{ get; set; }
+        public bool HasIcon { get; set; }
+
+        public string IconExt { get; set; } = "";
 
 
         //select

@@ -32,3 +32,4 @@ end
 go
 
 exec DevSubsectionToolGet @All = 1
+exec DevSubsectionToolGet @All = 0, @DevSubsectionToolId = 92
