@@ -37,7 +37,7 @@ export class NavMenu extends Component {
             <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 container-fluid light">
                 <Container>
                     <NavbarBrand tag={Link} to="/">
-                        <img src="/pic.JPG" width="100px" className="rounded-pill" />
+                        <img src="/pic.JPG?v=1" width="100px" className="rounded-pill" />
                         {profile.firstName + " " + profile.lastName + " " + "'s Software Portfolio"}</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="justify-content-between" isOpen={!this.state.collapsed} navbar>
