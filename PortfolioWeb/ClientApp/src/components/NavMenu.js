@@ -55,7 +55,7 @@ export class NavMenu extends Component {
                             </li>
 
                             <li className="nav-item">
-                                <a className="nav-link" target="_blank" href="/Ruchie Brisman's Resume.pdf?v=1"  >Get My Resume</a>
+                                <a className="nav-link" target="_blank" href="/Ruchie Brisman's Resume.pdf?v=1">Get My Resume</a>
 
                             </li>
 
